@@ -1,0 +1,60 @@
+name: Metrics
+
+on:
+  # Refresh daily at 00:00 UTC
+  schedule:
+    - cron: "0 0 * * *"
+  # Allow manual runs from the Actions tab / gh CLI
+  workflow_dispatch:
+  # Refresh on pushes to main — but ignore the bot's own SVG commit to avoid a self-trigger loop
+  push:
+    branches: ["main"]
+    paths-ignore:
+      - "github-metrics.svg"
+
+permissions:
+  contents: write
+
+# Never run two metrics jobs at once; cancel an in-progress run when a newer one starts
+concurrency:
+  group: metrics
+  cancel-in-progress: true
+
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate metrics
+        uses: lowlighter/metrics@latest
+        with:
+          # PAT (classic) with scopes: repo, read:org, read:user — stored as repo secret
+          token: ${{ secrets.METRICS_TOKEN }}
+          user: 0xAre
+          filename: github-metrics.svg
+          template: classic
+          base: header, activity, community, repositories, metadata
+          config_timezone: Asia/Jakarta
+
+          # Count contributions across owned repos, collaborations, and organizations (e.g. DAEMON)
+          repositories_affiliations: owner, collaborator, organization_member
+
+          # Languages — two bars:
+          #  - most-used:     byte breakdown of owned repos (TypeScript, Rust, C, ...)
+          #  - recently-used: parsed from your events feed, so Kotlin/Go from contributed
+          #                   & forked repos (cakra-mesh, Caraka-SuperApp, DAEMON) surface
+          plugin_languages: yes
+          plugin_languages_indepth: no
+          plugin_languages_limit: 8
+          plugin_languages_sections: most-used, recently-used
+          plugin_languages_details: percentage
+          plugin_languages_recent_categories: markup, programming
+          plugin_languages_recent_load: 1000
+          plugin_languages_recent_days: 90
+
+          # Year-long activity calendar
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: full-year
+
+          # Commit the generated SVG back to the repo
+          output_action: commit
+          committer_message: "chore: update github-metrics.svg [skip ci]"

@@ -1,0 +1,12 @@
+# Backups
+*.bak
+README.legacy.*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*~
