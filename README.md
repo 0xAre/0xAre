@@ -122,4 +122,4 @@ Special thanks to collaborators who contributed ideas, reviews, and improvements
 
 | GitHub | Contribution area |
 |--------|-------------------|
-| [@atikarr](https://github.com/atikarr) | Code review & feedback |
+| [@atikarr](https://github.com/atikarr) | Code review, feedback & collaboration |
