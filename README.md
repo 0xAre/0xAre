@@ -114,12 +114,3 @@ Published at the **11th International Conference on Computing, Engineering and D
 
 </div>
 
----
-
-## Collaborators
-
-Special thanks to collaborators who contributed ideas, reviews, and improvements to projects in this portfolio:
-
-| GitHub | Contribution area |
-|--------|-------------------|
-| [@atikarr](https://github.com/atikarr) | Code review, feedback & collaboration |
