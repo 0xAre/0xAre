@@ -23,6 +23,7 @@ concurrency:
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
+    if: ${{ secrets.METRICS_TOKEN != '' }}
     steps:
       - name: Generate metrics
         uses: lowlighter/metrics@latest
