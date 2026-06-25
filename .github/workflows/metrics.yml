@@ -23,9 +23,17 @@ concurrency:
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
-    if: ${{ secrets.METRICS_TOKEN != '' }}
     steps:
+      - name: Check if token is available
+        id: check
+        run: |
+          if [ -z "${{ secrets.METRICS_TOKEN }}" ]; then
+            echo "available=false" >> $GITHUB_ENV
+          else
+            echo "available=true" >> $GITHUB_ENV
+          fi
       - name: Generate metrics
+        if: env.available == 'true'
         uses: lowlighter/metrics@latest
         with:
           # PAT (classic) with scopes: repo, read:org, read:user — stored as repo secret
