@@ -36,8 +36,8 @@ jobs:
         if: env.available == 'true'
         uses: lowlighter/metrics@latest
         with:
-          # PAT (classic) with scopes: repo, read:org, read:user — stored as repo secret
-          token: ${{ secrets.METRICS_TOKEN }}
+          # Prefer PAT in METRICS_TOKEN; fall back to the workflow's GitHub token when absent
+          token: ${{ secrets.METRICS_TOKEN || github.token }}
           user: 0xAre
           filename: github-metrics.svg
           template: classic
